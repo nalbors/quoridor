@@ -6,7 +6,7 @@
 
 using namespace std;
 
-gra::gra() : p1(8, 2), p2(8, 0), isGameOver(false), kogo_kolej(1) {}
+gra::gra() : p1(8, 16), p2(8, 0), isGameOver(false), kogo_kolej(1) {}
 
 void gra::play() {
 	p1.wczytaj_nick();
