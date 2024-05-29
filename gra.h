@@ -22,6 +22,7 @@ public:
 	bool p1_mozliwosc_w_dol();
 	bool p1_mozliwosc_w_lewo();
 	bool p1_mozliwosc_w_prawo();
+#nie rob rozdzialu na p1 i p2 mozliwosc ruchu tylko pionek jako obiekt powinien zostac przekazany do metody z aktualna pozycja i beda 4 metody na roch zamiast 8
 	bool p2_mozliwosc_w_gore();
 	bool p2_mozliwosc_w_dol();
 	bool p2_mozliwosc_w_lewo();
