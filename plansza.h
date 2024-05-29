@@ -5,6 +5,7 @@
 #include "elementy_gry.h"
 #include "kolory_kierunki.h"
 
+#albo polski albo angielski we wszystkich plikach preferowany angielski a nie plansza_scianki_revers
 class plansza : public elementy_gry {
 public:
 	unsigned char board[17][17]; // Plansza o wymiarach 9x9
