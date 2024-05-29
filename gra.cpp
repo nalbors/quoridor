@@ -63,6 +63,11 @@ void gra::wypisz() {
 
 void gra::next_turn() {
 	//warunek, sprawdzajacy kogo tura, aby zmienic kolor w konsoli (zeby bylo przejrzysciej)
+	// tutaj mozesz  podnosic licznik ruchow
+	// i jezeli jest parzysta to masz p2
+	// a w przeciwnym przypdaku to masz p1
+	// jeszcze lepiej jakbys obsługe tury przeniósł do nowege typu (klasy tura)
+	// i tam tym zarzadzał
 	if (kogo_kolej == 1) set_color(CZERWONY);
 	else set_color(ZIELONY);
 	printf("Tura gracza %d\n", kogo_kolej);
@@ -115,6 +120,11 @@ void gra::next_turn() {
 				printf("4. W Prawo\n");
 			}
 			set_color(BIALY);
+
+			// wyciagni scanf z while zrob obsługe zeby przyjmowac ograniczony wybor
+			// i wyrzuca error jak uzytkownik wpisze niedowzwolony string
+			// wrzuc ten długi warunek do methody i zwracaj boola
+			// wtedy mozesz wołac while(jakas_methoda(paramaetry))
 			while (scanf("%d", &wybor) != 1 || getchar() != '\n' ||
 				(w_gore == false && wybor == 1) ||
 				(w_dol == false && wybor == 2) ||
@@ -216,6 +226,15 @@ void gra::next_turn() {
 		//Ustawianie scianki
 		if (kogo_kolej == 1) {
 			if (p1.get_sciany() == 0) {
+				// przenies to co w print do zmiennej const string, teraz masz dokanie ten sama printke
+				// w kilku miejscach, mozesz nazwac ja log_cos_tam
+				/*
+    					void log_cos_tam(){
+	 					print("twoj zajebiscie długi string")
+       						_getch();
+	     				}
+	     			*/
+				// wtedy wołasz sobie tylko log_cos_tam()
 				printf("Brak ilosci scian do postawienia.\nNacisnij dowolny klawisz aby kontynuowac.");
 				_getch(); //funkcja z biblioteki <conio.h> dzieki ktorej nie trzeba naciskac entera przy uzyciu getchar()
 						  //dzieki czemu mozna zrobic opcje "Nacisnij dowolny klawisz aby kontynuowac"
@@ -301,6 +320,9 @@ void gra::next_turn() {
 	kogo_kolej = (kogo_kolej == 1) ? 2 : 1;
 }
 
+
+// czemu uzywa metody to ustawiana pola w tej samej klasie
+// ta zmienna jest dostepna w kalse gra (ona jest prywatna ale po za nia)
 void gra::setGameOver(bool gameover) {
 	isGameOver = gameover;
 }
@@ -329,8 +351,20 @@ bool gra::p1_mozliwosc_w_lewo() {
 	}
 	else return true;
 }
+
+// wszykie meteody powinny przejomowac obietk typ pione 
+// i wyciagajac jego propertisy okresic czy moze wykonac dany ruch
+/*
+#include pionek.costam
+
+bool gra::mozliwosc_w_prawo(Pionek pionek) {
+	if (pionek.get_y() == 16 || board.board[Y][X + 1] == 179)
+		return false;
+	else return true;
+}
+*/
 bool gra::p1_mozliwosc_w_prawo() {
-	int Y = p1.get_Y();
+	int Y = pionek.get_Y();
 	int X = p1.get_X();
 	if (X == 16 || board.board[Y][X + 1] == 179) {
 		return false;
@@ -374,7 +408,14 @@ void gra::sprawdz_wygrana() {
 	if (p1.get_Y() == 0) {
 		set_color(CZERWONY);
 		printf("\nKONIEC GRY, WYGRYWA GRACZ CZERWONY");
-		setGameOver(true);
+		setGameOver(true); // ustawainie wyniku mozesz wyciagnac z ifa
+		// dodatkow setGameOver moglo by przyjowac obiekt player i w zalenosci od jego 
+		// pola color prinotwac ta linie
+		
+		// te 3 metody powinny przyjmowac obiekt typu pionek (p) i byc wrzucone do klasy gry
+		// wtedy te 3 metody wołasz raz za if-em 
+		// dodatkowo sama metoda zakutalizuj_ranking (a własciwie update_scoarboard)
+		// powinna sprawdzac czy gracz (player) istnieje w rankingu
 		p1.dodaj_do_rankingu_jezeli_nie_istnieje();
 		p2.dodaj_do_rankingu_jezeli_nie_istnieje();
 		p1.zaktualizuj_ranking();
